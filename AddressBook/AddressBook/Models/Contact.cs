@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AddressBook.Models
 {
     public class Contact
     {
         public int Id { get; set; }
+
+        [ForeignKey("User")]
+        public string UserId { get; set; }
+        public virtual User User { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
