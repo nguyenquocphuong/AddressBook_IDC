@@ -30,7 +30,13 @@ namespace AddressBook.Controllers
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                //return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                if (_signInManager == null)
+                {
+                    _signInManager = HttpContext.GetOwinContext().GetUserManager<ApplicationSignInManager>();
+                    _signInManager.UserManager.PasswordHasher = new SHA256PasswordHasher();
+                }
+                return _signInManager;
             }
             private set 
             { 
@@ -42,7 +48,13 @@ namespace AddressBook.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                //return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                if (_userManager == null)
+                {
+                    _userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                    _userManager.PasswordHasher = new SHA256PasswordHasher();
+                }
+                return _userManager;
             }
             private set
             {
@@ -228,7 +240,7 @@ namespace AddressBook.Controllers
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), User.Identity.Name + model.OldPassword, User.Identity.Name + model.NewPassword);
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -257,7 +269,7 @@ namespace AddressBook.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+                var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), User.Identity.Name + model.NewPassword);
                 if (result.Succeeded)
                 {
                     var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
