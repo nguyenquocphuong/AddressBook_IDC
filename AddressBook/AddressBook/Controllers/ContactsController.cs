@@ -17,7 +17,8 @@ namespace AddressBook.Controllers
         // GET: Contacts
         public ActionResult Index()
         {
-            //var contacts = db.Contacts.Include(c => c.User);
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("Login","Account");
             var contacts = db.Contacts.Where(c => c.User.UserName == User.Identity.Name);
             return View(contacts.ToList());
         }
@@ -76,7 +77,7 @@ namespace AddressBook.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", contact.UserId);
+            //ViewBag.UserId = new SelectList(db.Users, "Id", "Email", contact.UserId);
             return View(contact);
         }
 
@@ -93,7 +94,7 @@ namespace AddressBook.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.Users, "Id", "Email", contact.UserId);
+            //ViewBag.UserId = new SelectList(db.Users, "Id", "Email", contact.UserId);
             return View(contact);
         }
 

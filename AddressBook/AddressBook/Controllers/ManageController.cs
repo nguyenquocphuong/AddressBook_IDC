@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AddressBook.Models;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace AddressBook.Controllers
 {
@@ -283,6 +285,45 @@ namespace AddressBook.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        //
+        // GET: /Manage/ChangeUserBasicInfo
+        public ActionResult ChangeUserBasicInfo()
+        {
+            User user = UserManager.FindById(User.Identity.GetUserId());
+            UserBasicInfoViewModel model = new UserBasicInfoViewModel
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+            return View(model);
+        }
+
+        //
+        // POST: /Manage/ChangeUserBasicInfo
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeUserBasicInfo([Bind(Include = "Email, FirstName, LastName")]UserBasicInfoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    User user = db.Users.Where(u => u.UserName == User.Identity.Name).First();
+                    if (user != null)
+                    {
+                        db.Entry(user).State = EntityState.Modified;
+                        user.Email = model.Email;
+                        user.FirstName = model.FirstName;
+                        user.LastName = model.LastName;
+                        db.SaveChanges();
+                    }
+                }
+                return RedirectToAction("Index");
+            }
             return View(model);
         }
 

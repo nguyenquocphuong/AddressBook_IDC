@@ -206,6 +206,10 @@
     <Compile Include="Migrations\201512012244015_AddContact.Designer.cs">
       <DependentUpon>201512012244015_AddContact.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512020217558_AddUserFirstAndLastName.cs" />
+    <Compile Include="Migrations\201512020217558_AddUserFirstAndLastName.Designer.cs">
+      <DependentUpon>201512020217558_AddUserFirstAndLastName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\SHA256PasswordHasher.cs" />
@@ -213,6 +217,7 @@
     <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -277,6 +282,7 @@
     <Content Include="Views\Contacts\Details.cshtml" />
     <Content Include="Views\Contacts\Edit.cshtml" />
     <Content Include="Views\Contacts\Index.cshtml" />
+    <Content Include="Views\Manage\ChangeUserBasicInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -295,6 +301,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201512012244015_AddContact.resx">
       <DependentUpon>201512012244015_AddContact.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512020217558_AddUserFirstAndLastName.resx">
+      <DependentUpon>201512020217558_AddUserFirstAndLastName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -162,3 +162,4 @@ C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.p
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.InitialCreate.resources
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.csproj.GenerateResource.Cache
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AddContact.resources
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AddUserFirstAndLastName.resources
