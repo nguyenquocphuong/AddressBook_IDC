@@ -1,0 +1,8 @@
+﻿@model AssignedRole
+@using AddressBook.Models;
+
+<fieldset>
+    @Html.HiddenFor(model => model.RoleId)
+    @Html.CheckBoxFor(model => model.Assigned)
+    @Html.DisplayFor(model => model.RoleName)
+</fieldset>

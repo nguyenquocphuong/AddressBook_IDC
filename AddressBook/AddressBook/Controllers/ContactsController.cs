@@ -15,6 +15,7 @@ namespace AddressBook.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Contacts
+        [Authorize(Roles = "User")]
         public ActionResult Index()
         {
             if (!User.Identity.IsAuthenticated)
@@ -24,13 +25,14 @@ namespace AddressBook.Controllers
         }
 
         // GET: Contacts/Details/5
+        [Authorize(Roles = "User")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = db.Contacts.Where(c => c.User.UserName == User.Identity.Name && c.Id == id).FirstOrDefault();
             if (contact == null)
             {
                 return HttpNotFound();
@@ -39,6 +41,7 @@ namespace AddressBook.Controllers
         }
 
         // GET: Contacts/Create
+        [Authorize(Roles = "User")]
         public ActionResult Create()
         {
             //ViewBag.UserId = new SelectList(db.Users, "Id", "Email");
@@ -50,6 +53,7 @@ namespace AddressBook.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User")]
         public ActionResult Create([Bind(Include = "FirstName,LastName,PhoneNumber,StreetName,City,Province,PostalCode,Country")] Contact contact)
         {
             if (ModelState.IsValid)
@@ -66,13 +70,14 @@ namespace AddressBook.Controllers
         }
 
         // GET: Contacts/Edit/5
+        [Authorize(Roles = "User")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = db.Contacts.Where(c => c.User.UserName == User.Identity.Name && c.Id == id).FirstOrDefault();
             if (contact == null)
             {
                 return HttpNotFound();
@@ -86,6 +91,7 @@ namespace AddressBook.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User")]
         public ActionResult Edit([Bind(Include = "Id,UserId,FirstName,LastName,PhoneNumber,StreetName,City,Province,PostalCode,Country")] Contact contact)
         {
             if (ModelState.IsValid)
@@ -99,13 +105,14 @@ namespace AddressBook.Controllers
         }
 
         // GET: Contacts/Delete/5
+        [Authorize(Roles = "User")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contact contact = db.Contacts.Find(id);
+            Contact contact = db.Contacts.Where(c => c.User.UserName == User.Identity.Name && c.Id == id).FirstOrDefault();
             if (contact == null)
             {
                 return HttpNotFound();
@@ -116,6 +123,7 @@ namespace AddressBook.Controllers
         // POST: Contacts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "User")]
         public ActionResult DeleteConfirmed(int id)
         {
             Contact contact = db.Contacts.Find(id);
