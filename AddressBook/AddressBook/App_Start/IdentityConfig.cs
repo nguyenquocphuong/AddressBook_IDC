@@ -11,6 +11,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using AddressBook.Models;
+using System.Configuration;
+using System.Net.Mail;
 
 namespace AddressBook
 {
@@ -18,8 +20,17 @@ namespace AddressBook
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            MailMessage mail = new MailMessage(ConfigurationManager.AppSettings["emailFrom"], message.Destination);
+            mail.Subject = message.Subject;
+            mail.Body = message.Body;
+            mail.IsBodyHtml = true;
+
+            SmtpClient client = new SmtpClient(ConfigurationManager.AppSettings["SMTPServer"], Convert.ToInt32(ConfigurationManager.AppSettings["SMTPServerPort"]));
+            System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["emailFrom"], ConfigurationManager.AppSettings["emailPassword"]);
+            client.Credentials = credentials;
+
+            // Send:
+            return client.SendMailAsync(mail);
         }
     }
 
@@ -38,6 +49,8 @@ namespace AddressBook
         public ApplicationUserManager(IUserStore<User> store)
             : base(store)
         {
+            this.UserTokenProvider = new TotpSecurityStampBasedTokenProvider<User, string>();
+            this.EmailService = new EmailService();
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 

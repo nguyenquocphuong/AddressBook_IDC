@@ -163,3 +163,10 @@ C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.M
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.csproj.GenerateResource.Cache
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AddContact.resources
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AddUserFirstAndLastName.resources
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Mvc.RazorTools.dll
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Mvc.RazorTools.FontAwesome.dll
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\WebActivatorEx.dll
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Mvc.RazorTools.xml
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Mvc.RazorTools.FontAwesome.xml
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Resources.EmailTemplates.resources
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AddMessage.resources

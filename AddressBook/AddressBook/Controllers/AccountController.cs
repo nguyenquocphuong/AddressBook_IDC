@@ -10,12 +10,16 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AddressBook.Models;
 using System.Data.Entity.Validation;
+using System.Net;
+using AddressBook.Resources;
+using System.Web.Security;
 
 namespace AddressBook.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -228,12 +232,33 @@ namespace AddressBook.Controllers
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account",
+                    new { UserId = user.Id, code = code }, protocol: Request.Url.Scheme);
+
+                string tempPwd = Membership.GeneratePassword(8, 2);
+                SHA256PasswordHasher pwdHasher = new SHA256PasswordHasher();
+                user.TempPassword = pwdHasher.HashPassword(tempPwd);
+
+                Message message = new Message
+                {
+                    Type = (int)EnumMessageType.Email,
+                    Header = "Reset Password",
+                    Body = string.Format(EmailTemplates.ResetPasswordTemplate, user.FirstName + " " + user.LastName, tempPwd,  "<a href=\"" + callbackUrl + "\">link</a>"),
+                    isHTML = true
+                };
+
+                try
+                {
+                    await UserManager.SendEmailAsync(user.Id, message.Header, message.Body);
+                }
+                catch (Exception e) { }
+
+                await UserManager.UpdateAsync(user);
+                db.Messages.Add(message);
+                await db.SaveChangesAsync();
+
+                return View("ForgotPasswordConfirmation");
             }
 
             // If we got this far, something failed, redisplay form
@@ -251,9 +276,22 @@ namespace AddressBook.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(string UserId, string code)
         {
-            return code == null ? View("Error") : View();
+            if (string.IsNullOrWhiteSpace(UserId) || string.IsNullOrWhiteSpace(code))
+                return View("Error");
+
+            User user = UserManager.FindById(UserId);
+            if(user == null)
+                return View("Error");
+
+            var resetPasswordViewModel = new ResetPasswordViewModel
+            {
+                Email = user.UserName,
+                Code = code
+            };
+
+            return View(resetPasswordViewModel);
         }
 
         //
@@ -273,6 +311,13 @@ namespace AddressBook.Controllers
                 // Don't reveal that the user does not exist
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
+
+            SHA256PasswordHasher hasher = new SHA256PasswordHasher();
+            if(hasher.VerifyHashedPassword(user.TempPassword,model.TemporaryPassword) == PasswordVerificationResult.Failed)
+            {
+                return View();
+            }
+
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Email + model.Password);
             if (result.Succeeded)
             {

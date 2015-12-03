@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Mvc.RazorTools.FontAwesome
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,7 +8,7 @@
     <title>@ViewBag.Title - Address Book</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Mvc.RazorTools.BundleManager.Styles.Render()
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

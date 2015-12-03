@@ -90,9 +90,32 @@ namespace AddressBook.Controllers
                 var result = await UserManager.CreateAsync(user, user.Email + UsersController.DEFAULT_PASSWORD);
                 if (result.Succeeded)
                 {
-                //    foreach (AssignedRole assignedRole in userViewModel.Roles)
-                //        if(assignedRole.Assigned)
-                //            await UserManager.AddToRoleAsync(user.Id, assignedRole.RoleName);
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action(
+                       "ConfirmEmail", "Account",
+                       new { userId = user.Id, code = code },
+                       protocol: Request.Url.Scheme);
+
+                    Message message = new Message
+                    {
+                        Type = (int)EnumMessageType.Email,
+                        Header = "Account Confirmation",
+                        Body = "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>",
+                        isHTML = true
+                    };
+
+                    try
+                    {
+                        await UserManager.SendEmailAsync(user.Id,
+                           message.Header,
+                           message.Body);
+                    }
+                    catch(Exception e) { }
+
+                    await UserManager.AddToRoleAsync(user.Id, "User");
+                    db.Messages.Add(message);
+                    await db.SaveChangesAsync();
+
                     return RedirectToAction("Index");
                 }
             }
