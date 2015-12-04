@@ -22,3 +22,31 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.fa-link-button-default
+{
+    color: dimgray;
+}
+
+.fa-link-button-edit
+{
+    color: #5cb85c;
+}
+
+.fa-link-button-delete
+{
+    color: #d9534f;
+}
+
+.fa-link-button-info
+{
+    color: #5bc0de;
+}
+
+.fa-link-button-default:active
+.fa-link-button-edit:active
+.fa-link-button-delete:active
+.fa-link-button-info:active
+{
+    color: #428bca;
+}

@@ -13,6 +13,7 @@ using System.Data.Entity.Validation;
 using System.Net;
 using AddressBook.Resources;
 using System.Web.Security;
+using System.Data.Entity;
 
 namespace AddressBook.Controllers
 {
@@ -158,7 +159,7 @@ namespace AddressBook.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles="Administrator")]
         public ActionResult Register()
         {
             return View();
@@ -167,7 +168,7 @@ namespace AddressBook.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -240,23 +241,12 @@ namespace AddressBook.Controllers
                 SHA256PasswordHasher pwdHasher = new SHA256PasswordHasher();
                 user.TempPassword = pwdHasher.HashPassword(tempPwd);
 
-                Message message = new Message
-                {
-                    Type = (int)EnumMessageType.Email,
-                    Header = "Reset Password",
-                    Body = string.Format(EmailTemplates.ResetPasswordTemplate, user.FirstName + " " + user.LastName, tempPwd,  "<a href=\"" + callbackUrl + "\">link</a>"),
-                    isHTML = true
-                };
-
-                try
-                {
-                    await UserManager.SendEmailAsync(user.Id, message.Header, message.Body);
-                }
-                catch (Exception e) { }
-
                 await UserManager.UpdateAsync(user);
-                db.Messages.Add(message);
-                await db.SaveChangesAsync();
+
+                UserManager.SendEmailAsync(
+                    user.Id,
+                    "Reset Password",
+                    string.Format(EmailTemplates.ResetPasswordTemplate, user.FirstName + " " + user.LastName, tempPwd, "<a href=\"" + callbackUrl + "\">link</a>"));
 
                 return View("ForgotPasswordConfirmation");
             }
@@ -321,6 +311,10 @@ namespace AddressBook.Controllers
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Email + model.Password);
             if (result.Succeeded)
             {
+                user = db.Users.Find(user.Id);
+                user.TempPassword = null;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
             }
             AddErrors(result);

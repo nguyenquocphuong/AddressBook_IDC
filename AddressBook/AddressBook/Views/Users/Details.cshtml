@@ -56,9 +56,19 @@
                 </div>
             }
         </dd>
+        <dt>
+
+        </dt>
+        <dd>
+            <br/>
+            <form action="@Url.Action("Edit", "Users", new { id = Model.Id }, protocol: Request.Url.Scheme)">
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-pencil"></i> Edit
+                </button>
+            </form>
+        </dd>
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

@@ -65,7 +65,39 @@ namespace AddressBook.Resources {
         ///    Dear {0},
         ///&lt;/p&gt;
         ///&lt;p&gt;
-        ///    Your temporary password is {1}.
+        ///    Your account has been created by admin.
+        ///	&lt;br/&gt;
+        ///	UserId: {1}
+        ///	&lt;br/&gt;
+        ///	Password: {2}
+        ///&lt;/p&gt;
+        ///&lt;p&gt;
+        ///
+        ///&lt;/p&gt;
+        ///&lt;p&gt;
+        ///    Please confirm your email by clicking the following link.
+        ///&lt;/p&gt;
+        ///&lt;p&gt;
+        ///    {3}
+        ///&lt;/p&gt;
+        ///&lt;p&gt;
+        ///    Yours sincerely,
+        ///    &lt;br/&gt;
+        ///    Address Book.
+        ///&lt;/p&gt;.
+        /// </summary>
+        internal static string AccountCreationTemplate {
+            get {
+                return ResourceManager.GetString("AccountCreationTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;
+        ///    Dear {0},
+        ///&lt;/p&gt;
+        ///&lt;p&gt;
+        ///    Your temporary password is {1}
         ///&lt;/p&gt;
         ///&lt;p&gt;
         ///

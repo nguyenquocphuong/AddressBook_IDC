@@ -11,6 +11,7 @@ namespace AddressBook.Models
     {
         public string HashPassword(string password)
         {
+            if (string.IsNullOrWhiteSpace(password)) return null;
             SHA256 sha256 = SHA256Managed.Create();
             byte[] bytes = Encoding.Unicode.GetBytes(password);
             byte[] hashValue = sha256.ComputeHash(bytes);
@@ -19,6 +20,7 @@ namespace AddressBook.Models
 
         public PasswordVerificationResult VerifyHashedPassword(string hashedPassword, string providedPassword)
         {
+            if (string.IsNullOrWhiteSpace(hashedPassword) || string.IsNullOrWhiteSpace(providedPassword)) return PasswordVerificationResult.Failed;
             string testHash = this.HashPassword(providedPassword);
             return hashedPassword.Equals(testHash) ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
         }

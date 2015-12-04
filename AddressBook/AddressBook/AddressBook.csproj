@@ -229,7 +229,12 @@
     <Compile Include="Migrations\201512030357536_AddMessage.Designer.cs">
       <DependentUpon>201512030357536_AddMessage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201512031517209_AppendMessageModel.cs" />
+    <Compile Include="Migrations\201512031517209_AppendMessageModel.Designer.cs">
+      <DependentUpon>201512031517209_AppendMessageModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\AES.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\SHA256PasswordHasher.cs" />
@@ -327,6 +332,7 @@
     <Content Include="Views\Users\Edit.cshtml" />
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AssignedRole.cshtml" />
+    <Content Include="Views\Users\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -352,10 +358,19 @@
     <EmbeddedResource Include="Migrations\201512030357536_AddMessage.resx">
       <DependentUpon>201512030357536_AddMessage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201512031517209_AppendMessageModel.resx">
+      <DependentUpon>201512031517209_AppendMessageModel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\EmailTemplates.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EmailTemplates.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\myAES\myAES.csproj">
+      <Project>{474a697e-7efb-4356-9406-35618a7a8b2a}</Project>
+      <Name>myAES</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

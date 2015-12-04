@@ -1,0 +1,8 @@
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AES\bin\Debug\AES.exe.config
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AES\bin\Debug\AES.exe
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AES\bin\Debug\AES.pdb
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AES\obj\Debug\AES.csprojResolveAssemblyReference.cache
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AES\obj\Debug\AES.exe
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AES\obj\Debug\AES.pdb
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AES\bin\Debug\myAES.dll
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AES\bin\Debug\myAES.pdb

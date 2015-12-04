@@ -43,5 +43,23 @@ namespace AddressBook.Models
 
         [Display(Name = "Country")]
         public string Country { get; set; }
+
+        public void EncryptPII()
+        {
+            this.FirstName = Convert.ToBase64String(myAES.AES.Encrypt(this.FirstName));
+            this.LastName = Convert.ToBase64String(myAES.AES.Encrypt(this.LastName));
+            this.PhoneNumber = Convert.ToBase64String(myAES.AES.Encrypt(this.PhoneNumber));
+        }
+
+        public void DecryptPII()
+        {
+            try
+            {
+                this.FirstName = myAES.AES.Decrypt(Convert.FromBase64String(this.FirstName));
+                this.LastName = myAES.AES.Decrypt(Convert.FromBase64String(this.LastName));
+                this.PhoneNumber = myAES.AES.Decrypt(Convert.FromBase64String(this.PhoneNumber));
+            }
+            catch { }
+        }
     }
 }

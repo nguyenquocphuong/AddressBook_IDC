@@ -117,12 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountCreationTemplate" xml:space="preserve">
+    <value>&lt;p&gt;
+    Dear {0},
+&lt;/p&gt;
+&lt;p&gt;
+    Your account has been created by admin.
+	&lt;br/&gt;
+	UserId: {1}
+	&lt;br/&gt;
+	Password: {2}
+&lt;/p&gt;
+&lt;p&gt;
+
+&lt;/p&gt;
+&lt;p&gt;
+    Please confirm your email by clicking the following link.
+&lt;/p&gt;
+&lt;p&gt;
+    {3}
+&lt;/p&gt;
+&lt;p&gt;
+    Yours sincerely,
+    &lt;br/&gt;
+    Address Book.
+&lt;/p&gt;</value>
+  </data>
   <data name="ResetPasswordTemplate" xml:space="preserve">
     <value>&lt;p&gt;
     Dear {0},
 &lt;/p&gt;
 &lt;p&gt;
-    Your temporary password is {1}.
+    Your temporary password is {1}
 &lt;/p&gt;
 &lt;p&gt;
 

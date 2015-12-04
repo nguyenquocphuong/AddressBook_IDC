@@ -8,13 +8,13 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNet.Identity.Owin;
-using System;
+using System.Web.Security;
+using AddressBook.Resources;
 
 namespace AddressBook.Controllers
 {
     public class UsersController : Controller
     {
-        public const string DEFAULT_PASSWORD = "P@ssw0rd";
         private ApplicationDbContext db = new ApplicationDbContext();
 
         private ApplicationUserManager _userManager;
@@ -40,7 +40,7 @@ namespace AddressBook.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(UserViewModel.ToViewModel(db.Users.ToList()));
         }
 
         // GET: ApplicationUsers/Details/5
@@ -85,9 +85,10 @@ namespace AddressBook.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = userViewModel.ToDomainModel();
+                var user = UserViewModel.ToDomainModel(userViewModel);
 
-                var result = await UserManager.CreateAsync(user, user.Email + UsersController.DEFAULT_PASSWORD);
+                string randomPwd = Membership.GeneratePassword(8, 2);
+                var result = await UserManager.CreateAsync(user, user.Email + randomPwd);
                 if (result.Succeeded)
                 {
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -96,25 +97,11 @@ namespace AddressBook.Controllers
                        new { userId = user.Id, code = code },
                        protocol: Request.Url.Scheme);
 
-                    Message message = new Message
-                    {
-                        Type = (int)EnumMessageType.Email,
-                        Header = "Account Confirmation",
-                        Body = "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>",
-                        isHTML = true
-                    };
-
-                    try
-                    {
-                        await UserManager.SendEmailAsync(user.Id,
-                           message.Header,
-                           message.Body);
-                    }
-                    catch(Exception e) { }
-
                     await UserManager.AddToRoleAsync(user.Id, "User");
-                    db.Messages.Add(message);
-                    await db.SaveChangesAsync();
+
+                    UserManager.SendEmailAsync(user.Id,
+                       "Account Confirmation",
+                       string.Format(EmailTemplates.AccountCreationTemplate, userViewModel.FirstName + " " + userViewModel.LastName, user.UserName, randomPwd, "<a href=\"" + callbackUrl + "\">link</a>"));                    
 
                     return RedirectToAction("Index");
                 }
@@ -160,9 +147,69 @@ namespace AddressBook.Controllers
             if (ModelState.IsValid)
             {
                 var originalUser = db.Users.Find(userViewModel.Id);
+                UserViewModel.ToDomainModel(originalUser, userViewModel);
                 AddOrUpdateKeepExistingRoles(originalUser, userViewModel.Roles);
-                db.Entry(originalUser).CurrentValues.SetValues(userViewModel);
+                db.Entry(originalUser).State = EntityState.Modified;
                 db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(userViewModel);
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public ActionResult ResetPassword(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User applicationUser = db.Users.Find(id);
+            if (applicationUser == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.RoleId = new SelectList(db.Roles, "Id", "Name");
+
+
+            // Get all courses
+            var allDbRoles = db.Roles.ToList();
+
+            // Get the user we are editing and include the courses already subscribed to
+            var user = db.Users.Include("Roles").FirstOrDefault(x => x.Id == id);
+            var userViewModel = user.ToViewModel();
+
+            return View(userViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> ResetPassword(UserViewModel userViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await UserManager.FindByNameAsync(userViewModel.UserName);
+                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                {
+                    // Don't reveal that the user does not exist or is not confirmed
+                    return View(userViewModel);
+                }
+
+                var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account",
+                    new { UserId = user.Id, code = code }, protocol: Request.Url.Scheme);
+
+                string tempPwd = Membership.GeneratePassword(8, 2);
+                SHA256PasswordHasher pwdHasher = new SHA256PasswordHasher();
+                user.TempPassword = pwdHasher.HashPassword(tempPwd);
+
+                await UserManager.UpdateAsync(user);
+
+                UserManager.SendEmailAsync(
+                    user.Id,
+                    "Reset Password By Admin",
+                    string.Format(EmailTemplates.ResetPasswordTemplate, userViewModel.FirstName + " " + userViewModel.LastName, tempPwd, "<a href=\"" + callbackUrl + "\">link</a>"));
+
                 return RedirectToAction("Index");
             }
             return View(userViewModel);

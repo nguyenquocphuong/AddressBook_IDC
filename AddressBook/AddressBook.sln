@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.24627.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddressBook", "AddressBook\AddressBook.csproj", "{985C7D7A-B644-4D32-9418-290FDC42CDA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "myAES", "myAES\myAES.csproj", "{474A697E-7EFB-4356-9406-35618A7A8B2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AES", "AES\AES.csproj", "{DDF88BE2-4945-4A0F-A0D3-A5E3333B8FDF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{985C7D7A-B644-4D32-9418-290FDC42CDA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{985C7D7A-B644-4D32-9418-290FDC42CDA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{985C7D7A-B644-4D32-9418-290FDC42CDA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{474A697E-7EFB-4356-9406-35618A7A8B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{474A697E-7EFB-4356-9406-35618A7A8B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{474A697E-7EFB-4356-9406-35618A7A8B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{474A697E-7EFB-4356-9406-35618A7A8B2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDF88BE2-4945-4A0F-A0D3-A5E3333B8FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDF88BE2-4945-4A0F-A0D3-A5E3333B8FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDF88BE2-4945-4A0F-A0D3-A5E3333B8FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDF88BE2-4945-4A0F-A0D3-A5E3333B8FDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

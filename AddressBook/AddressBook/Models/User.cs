@@ -38,14 +38,7 @@ namespace AddressBook.Models
             {
                 List<IdentityRole> Roles = db.Roles.ToList();
 
-                var userViewModel = new UserViewModel
-                {
-                    Id = this.Id,
-                    UserName = this.UserName,
-                    Email = this.Email,
-                    FirstName = this.FirstName,
-                    LastName = this.LastName
-                };
+                UserViewModel userViewModel = UserViewModel.ToViewModel(this);
 
                 foreach (var userRole in this.Roles)
                 {
@@ -64,14 +57,7 @@ namespace AddressBook.Models
 
         public UserViewModel ToViewModel(ICollection<IdentityRole> allDbRoles)
         {
-            var userViewModel = new UserViewModel
-            {
-                Id = this.Id,
-                UserName = this.UserName,
-                Email = this.Email,
-                FirstName = this.FirstName,
-                LastName = this.LastName
-            };
+            UserViewModel userViewModel = UserViewModel.ToViewModel(this);
 
             // Collection for full list of courses with user's already assigned courses included
             ICollection<AssignedRole> allRoles = new List<AssignedRole>();

@@ -170,3 +170,7 @@ C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Mvc.RazorTools.xml
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Mvc.RazorTools.FontAwesome.xml
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Resources.EmailTemplates.resources
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AddMessage.resources
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AppendMessageModel.resources
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.csprojResolveAssemblyReference.cache
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\myAES.dll
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\myAES.pdb

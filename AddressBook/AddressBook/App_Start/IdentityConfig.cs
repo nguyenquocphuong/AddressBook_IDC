@@ -18,19 +18,45 @@ namespace AddressBook
 {
     public class EmailService : IIdentityMessageService
     {
+        ApplicationDbContext db = new ApplicationDbContext();
+
         public Task SendAsync(IdentityMessage message)
         {
-            MailMessage mail = new MailMessage(ConfigurationManager.AppSettings["emailFrom"], message.Destination);
-            mail.Subject = message.Subject;
-            mail.Body = message.Body;
-            mail.IsBodyHtml = true;
+            Message m = new Message
+            {
+                Type = (int)EnumMessageType.Email,
+                Sender = ConfigurationManager.AppSettings["emailFrom"],
+                Recipients = message.Destination,
+                Header = message.Subject,
+                Body = message.Body,
+                NumberOfTries = 0,
+                Status = (int)EnumMessageStatus.Fail,
+                isHTML = true
+            };
+
+            MailMessage mail = new MailMessage(m.Sender, m.Recipients);
+            mail.Subject = m.Header;
+            mail.Body = m.Body;
+            mail.IsBodyHtml = m.isHTML;
 
             SmtpClient client = new SmtpClient(ConfigurationManager.AppSettings["SMTPServer"], Convert.ToInt32(ConfigurationManager.AppSettings["SMTPServerPort"]));
             System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(ConfigurationManager.AppSettings["emailFrom"], ConfigurationManager.AppSettings["emailPassword"]);
             client.Credentials = credentials;
 
             // Send:
-            return client.SendMailAsync(mail);
+            m.NumberOfTries++;
+            try
+            {
+                client.Send(mail);
+                m.Status = (int)EnumMessageStatus.Succeed;
+            }
+            catch
+            {
+                m.Status = (int)EnumMessageStatus.Fail;
+            }
+
+            db.Messages.Add(m);
+            return db.SaveChangesAsync();
         }
     }
 
@@ -53,7 +79,7 @@ namespace AddressBook
             this.EmailService = new EmailService();
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<User>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
@@ -94,7 +120,7 @@ namespace AddressBook
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<User>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;

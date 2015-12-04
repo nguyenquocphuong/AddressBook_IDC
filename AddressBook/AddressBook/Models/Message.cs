@@ -26,11 +26,25 @@ namespace AddressBook.Models
         public string Body { get; set; }
 
         public bool isHTML { get; set; }
+
+        public string Sender { get; set; }
+
+        public string Recipients { get; set; }
+
+        public int Status { get; set; }
+
+        public int NumberOfTries { get; set; }
     }
 
     public enum EnumMessageType
     {
         Email = 0,
         SMS = 1
+    }
+
+    public enum EnumMessageStatus
+    {
+        Succeed = 1,
+        Fail = 0
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace AddressBook.Models
 {
@@ -19,6 +20,34 @@ namespace AddressBook.Models
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+
+        public static UserBasicInfoViewModel ToViewModel(User user)
+        {
+            UserBasicInfoViewModel userBasicInfoViewModel = new UserBasicInfoViewModel();
+            ToViewModel(user, userBasicInfoViewModel);
+            return userBasicInfoViewModel;
+        }
+
+        public static void ToViewModel(User user, UserBasicInfoViewModel userBasicInfoViewModel)
+        {
+            userBasicInfoViewModel.Email = user.Email;
+            userBasicInfoViewModel.FirstName = myAES.AES.Decrypt(Convert.FromBase64String(user.FirstName));
+            userBasicInfoViewModel.LastName = myAES.AES.Decrypt(Convert.FromBase64String(user.LastName));
+        }
+
+        public static User ToDomainModel(UserBasicInfoViewModel userBasicInfoViewModel)
+        {
+            User user = new User();
+            ToDomainModel(user, userBasicInfoViewModel);
+            return user;
+        }
+
+        public static void ToDomainModel(User user, UserBasicInfoViewModel userBasicInfoViewModel)
+        {
+            user.Email = userBasicInfoViewModel.Email;
+            user.FirstName = Convert.ToBase64String(myAES.AES.Encrypt(userBasicInfoViewModel.FirstName));
+            user.LastName = Convert.ToBase64String(myAES.AES.Encrypt(userBasicInfoViewModel.LastName));
+        }
     }
 
     public class UserViewModel : UserBasicInfoViewModel
@@ -39,18 +68,40 @@ namespace AddressBook.Models
             Roles = new Collection<AssignedRole>();
         }
 
-        public User ToDomainModel()
+        public static UserViewModel ToViewModel(User user)
+        {
+            UserViewModel userViewModel = new UserViewModel();
+
+            UserBasicInfoViewModel.ToViewModel(user, userViewModel);
+            userViewModel.Id = user.Id;
+            userViewModel.UserName = user.UserName;
+
+            return userViewModel;
+        }
+
+        public static List<UserViewModel> ToViewModel(List<User> users)
+        {
+            List<UserViewModel> userViewModels = new List<UserViewModel>();
+
+            foreach (User user in users)
+                userViewModels.Add(UserViewModel.ToViewModel(user));
+
+            return userViewModels;
+        }
+
+        public static User ToDomainModel(UserViewModel userViewModel)
         {
             User user = new User();
-
-            if (!string.IsNullOrWhiteSpace(this.Id))
-                user.Id = this.Id;
-            user.UserName = this.UserName;
-            user.Email = this.Email;
-            user.FirstName = this.FirstName;
-            user.LastName = this.LastName;
-
+            ToDomainModel(user, userViewModel);
             return user;
+        }
+
+        public static void ToDomainModel(User user, UserViewModel userViewModel)
+        {
+            UserBasicInfoViewModel.ToDomainModel(user, userViewModel);
+            if (!string.IsNullOrWhiteSpace(userViewModel.Id))
+                user.Id = userViewModel.Id;
+            user.UserName = userViewModel.UserName;
         }
     }
 

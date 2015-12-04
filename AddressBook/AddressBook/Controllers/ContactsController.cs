@@ -13,6 +13,7 @@ namespace AddressBook.Controllers
     public class ContactsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        public ContactsController() { db.Configuration.ValidateOnSaveEnabled = false; }
 
         // GET: Contacts
         [Authorize(Roles = "User")]
@@ -21,6 +22,9 @@ namespace AddressBook.Controllers
             if (!User.Identity.IsAuthenticated)
                 return RedirectToAction("Login","Account");
             var contacts = db.Contacts.Where(c => c.User.UserName == User.Identity.Name);
+            List<Contact> list = contacts.ToList();
+            foreach (Contact contact in list)
+                contact.DecryptPII();
             return View(contacts.ToList());
         }
 
@@ -37,6 +41,7 @@ namespace AddressBook.Controllers
             {
                 return HttpNotFound();
             }
+            contact.DecryptPII();
             return View(contact);
         }
 
@@ -60,6 +65,7 @@ namespace AddressBook.Controllers
             {
                 User user = db.Users.Where(u => u.UserName == User.Identity.Name).First();
                 contact.UserId = user.Id;
+                contact.EncryptPII();
                 db.Contacts.Add(contact);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -82,6 +88,7 @@ namespace AddressBook.Controllers
             {
                 return HttpNotFound();
             }
+            contact.DecryptPII();
             //ViewBag.UserId = new SelectList(db.Users, "Id", "Email", contact.UserId);
             return View(contact);
         }
@@ -96,6 +103,7 @@ namespace AddressBook.Controllers
         {
             if (ModelState.IsValid)
             {
+                contact.EncryptPII();
                 db.Entry(contact).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -117,6 +125,7 @@ namespace AddressBook.Controllers
             {
                 return HttpNotFound();
             }
+            contact.DecryptPII();
             return View(contact);
         }
 

@@ -1,39 +1,44 @@
-﻿@model IEnumerable<AddressBook.Models.User>
+﻿@model IEnumerable<AddressBook.Models.UserViewModel>
 
 @{
     ViewBag.Title = "Users";
 }
 
-<h2>Index</h2>
+<h2><i class="fa fa-user"></i> @ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<form action="@Url.Action("Create", "Users", null, protocol: Request.Url.Scheme)">
+    <button type="submit" class="btn btn-success">
+        <i class="fa fa-plus"></i> Create New
+    </button>
+</form>
+<br />
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
+            User
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+                <br />
+                @Html.DisplayFor(modelItem => item.FirstName), @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                <a class="fa-link-button-edit" title="Edit" href="@Url.Action("Edit", "Users", new { id = item.Id }, protocol: Request.Url.Scheme)"><i class="fa fa-pencil fa-lg"></i></a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="fa-link-button-info" title="View Details" href="@Url.Action("Details", "Users", new { id = item.Id }, protocol: Request.Url.Scheme)"><i class="fa fa-info fa-lg"></i></a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="fa-link-button-delete" title="Delete" href="@Url.Action("Delete", "Users", new { id = item.Id }, protocol: Request.Url.Scheme)"><i class="fa fa-trash-o fa-lg"></i></a>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <a class="fa-link-button-delete" title="Reset Password" href="@Url.Action("ResetPassword", "Users", new { id = item.Id }, protocol: Request.Url.Scheme)"><i class="fa fa-retweet fa-lg"></i></a>
+            </td>
+        </tr>
+    }
 
 </table>

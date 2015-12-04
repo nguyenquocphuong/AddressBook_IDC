@@ -293,12 +293,7 @@ namespace AddressBook.Controllers
         public ActionResult ChangeUserBasicInfo()
         {
             User user = UserManager.FindById(User.Identity.GetUserId());
-            UserBasicInfoViewModel model = new UserBasicInfoViewModel
-            {
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName
-            };
+            UserBasicInfoViewModel model = UserBasicInfoViewModel.ToViewModel(user);
             return View(model);
         }
 
@@ -316,9 +311,7 @@ namespace AddressBook.Controllers
                     if (user != null)
                     {
                         db.Entry(user).State = EntityState.Modified;
-                        user.Email = model.Email;
-                        user.FirstName = model.FirstName;
-                        user.LastName = model.LastName;
+                        UserBasicInfoViewModel.ToDomainModel(user, model);
                         db.SaveChanges();
                     }
                 }
