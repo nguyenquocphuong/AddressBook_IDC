@@ -7,55 +7,22 @@ using System.Security.Cryptography;
 
 namespace AddressBook.Models
 {
-    public class AES
+    public static class AES
     {
-        public static void Main()
-        {
-            try
-            {
+        private static byte[] KEY = { 141, 84, 117, 26, 10, 173, 183, 220, 147, 0, 32, 217, 4, 190, 244, 221, 148, 46, 175, 64, 16, 226, 86, 249, 70, 240, 111, 74, 138, 147, 104, 80 };
 
-                string original = "Here is some data to encrypt!";
-
-                // Create a new instance of the AesManaged
-                // class.  This generates a new key and initialization 
-                // vector (IV).
-                using (AesManaged myAes = new AesManaged())
-                {
-
-                    // Encrypt the string to an array of bytes.
-                    byte[] encrypted = EncryptStringToBytes_Aes(original, myAes.Key, myAes.IV);
-
-                    // Decrypt the bytes to a string.
-                    string roundtrip = DecryptStringFromBytes_Aes(encrypted, myAes.Key, myAes.IV);
-
-                    //Display the original data and the decrypted data.
-                    Console.WriteLine("Original:   {0}", original);
-                    Console.WriteLine("Round Trip: {0}", roundtrip);
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: {0}", e.Message);
-            }
-        }
-
-        static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
+        public static byte[] Encrypt(string plainText)
         {
             // Check arguments.
-            if (plainText == null || plainText.Length <= 0)
-                throw new ArgumentNullException("plainText");
-            if (Key == null || Key.Length <= 0)
-                throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
-                throw new ArgumentNullException("Key");
+            if (string.IsNullOrWhiteSpace(plainText))
+                return null;
+
             byte[] encrypted;
             // Create an AesManaged object
             // with the specified key and IV.
             using (AesManaged aesAlg = new AesManaged())
             {
-                aesAlg.Key = Key;
-                aesAlg.IV = IV;
+                aesAlg.Key = AES.KEY;
 
                 // Create a decrytor to perform the stream transform.
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
@@ -72,25 +39,20 @@ namespace AddressBook.Models
                             swEncrypt.Write(plainText);
                         }
                         encrypted = msEncrypt.ToArray();
+                        encrypted = encrypted.Concat(aesAlg.IV).ToArray();
                     }
                 }
             }
 
-
             // Return the encrypted bytes from the memory stream.
             return encrypted;
-
         }
 
-        static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key, byte[] IV)
+        public static string Decrypt(byte[] cipherText)
         {
             // Check arguments.
-            if (cipherText == null || cipherText.Length <= 0)
-                throw new ArgumentNullException("cipherText");
-            if (Key == null || Key.Length <= 0)
-                throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
-                throw new ArgumentNullException("Key");
+            if (cipherText == null || cipherText.Length <= 16)
+                return string.Empty;
 
             // Declare the string used to hold
             // the decrypted text.
@@ -100,14 +62,14 @@ namespace AddressBook.Models
             // with the specified key and IV.
             using (AesManaged aesAlg = new AesManaged())
             {
-                aesAlg.Key = Key;
-                aesAlg.IV = IV;
+                aesAlg.Key = AES.KEY;
+                aesAlg.IV = cipherText.SubArray(cipherText.Length - 16, 16);
 
                 // Create a decrytor to perform the stream transform.
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
                 // Create the streams used for decryption.
-                using (MemoryStream msDecrypt = new MemoryStream(cipherText))
+                using (MemoryStream msDecrypt = new MemoryStream(cipherText.SubArray(0, cipherText.Length - 16)))
                 {
                     using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                     {
@@ -124,7 +86,13 @@ namespace AddressBook.Models
             }
 
             return plaintext;
+        }
 
+        public static T[] SubArray<T>(this T[] data, int index, int length)
+        {
+            T[] result = new T[length];
+            Array.Copy(data, index, result, 0, length);
+            return result;
         }
     }
 }

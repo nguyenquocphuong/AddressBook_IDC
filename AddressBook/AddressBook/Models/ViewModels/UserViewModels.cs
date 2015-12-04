@@ -31,8 +31,8 @@ namespace AddressBook.Models
         public static void ToViewModel(User user, UserBasicInfoViewModel userBasicInfoViewModel)
         {
             userBasicInfoViewModel.Email = user.Email;
-            userBasicInfoViewModel.FirstName = myAES.AES.Decrypt(Convert.FromBase64String(user.FirstName));
-            userBasicInfoViewModel.LastName = myAES.AES.Decrypt(Convert.FromBase64String(user.LastName));
+            userBasicInfoViewModel.FirstName = AES.Decrypt(Convert.FromBase64String(user.FirstName));
+            userBasicInfoViewModel.LastName = AES.Decrypt(Convert.FromBase64String(user.LastName));
         }
 
         public static User ToDomainModel(UserBasicInfoViewModel userBasicInfoViewModel)
@@ -45,8 +45,8 @@ namespace AddressBook.Models
         public static void ToDomainModel(User user, UserBasicInfoViewModel userBasicInfoViewModel)
         {
             user.Email = userBasicInfoViewModel.Email;
-            user.FirstName = Convert.ToBase64String(myAES.AES.Encrypt(userBasicInfoViewModel.FirstName));
-            user.LastName = Convert.ToBase64String(myAES.AES.Encrypt(userBasicInfoViewModel.LastName));
+            user.FirstName = Convert.ToBase64String(AES.Encrypt(userBasicInfoViewModel.FirstName));
+            user.LastName = Convert.ToBase64String(AES.Encrypt(userBasicInfoViewModel.LastName));
         }
     }
 

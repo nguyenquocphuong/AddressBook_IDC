@@ -44,20 +44,23 @@ namespace AddressBook.Models
         [Display(Name = "Country")]
         public string Country { get; set; }
 
+        [Display(Name = "Notes")]
+        public string Notes { get; set; }
+
         public void EncryptPII()
         {
-            this.FirstName = Convert.ToBase64String(myAES.AES.Encrypt(this.FirstName));
-            this.LastName = Convert.ToBase64String(myAES.AES.Encrypt(this.LastName));
-            this.PhoneNumber = Convert.ToBase64String(myAES.AES.Encrypt(this.PhoneNumber));
+            this.FirstName = Convert.ToBase64String(AES.Encrypt(this.FirstName));
+            this.LastName = Convert.ToBase64String(AES.Encrypt(this.LastName));
+            this.PhoneNumber = Convert.ToBase64String(AES.Encrypt(this.PhoneNumber));
         }
 
         public void DecryptPII()
         {
             try
             {
-                this.FirstName = myAES.AES.Decrypt(Convert.FromBase64String(this.FirstName));
-                this.LastName = myAES.AES.Decrypt(Convert.FromBase64String(this.LastName));
-                this.PhoneNumber = myAES.AES.Decrypt(Convert.FromBase64String(this.PhoneNumber));
+                this.FirstName = AES.Decrypt(Convert.FromBase64String(this.FirstName));
+                this.LastName = AES.Decrypt(Convert.FromBase64String(this.LastName));
+                this.PhoneNumber = AES.Decrypt(Convert.FromBase64String(this.PhoneNumber));
             }
             catch { }
         }

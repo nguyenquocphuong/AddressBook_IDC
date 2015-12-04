@@ -227,6 +227,7 @@ namespace AddressBook.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
+                UserViewModel userViewModel = UserViewModel.ToViewModel(user);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -246,7 +247,7 @@ namespace AddressBook.Controllers
                 UserManager.SendEmailAsync(
                     user.Id,
                     "Reset Password",
-                    string.Format(EmailTemplates.ResetPasswordTemplate, user.FirstName + " " + user.LastName, tempPwd, "<a href=\"" + callbackUrl + "\">link</a>"));
+                    string.Format(EmailTemplates.ResetPasswordTemplate, userViewModel.FirstName + " " + userViewModel.LastName, tempPwd, "<a href=\"" + callbackUrl + "\">link</a>"));
 
                 return View("ForgotPasswordConfirmation");
             }

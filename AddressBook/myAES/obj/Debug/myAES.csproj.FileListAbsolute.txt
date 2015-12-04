@@ -2,4 +2,3 @@ C:\Dropbox\Works\AddressBook_IDC\AddressBook\myAES\bin\Debug\myAES.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\myAES\bin\Debug\myAES.pdb
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\myAES\obj\Debug\myAES.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\myAES\obj\Debug\myAES.pdb
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\myAES\obj\Debug\myAES.csprojResolveAssemblyReference.cache

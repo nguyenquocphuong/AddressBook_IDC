@@ -79,18 +79,6 @@ D:\Works\AddressBook\AddressBook\bin\Microsoft.Owin.Security.MicrosoftAccount.xm
 D:\Works\AddressBook\AddressBook\obj\Debug\AddressBook.csprojResolveAssemblyReference.cache
 D:\Works\AddressBook\AddressBook\obj\Debug\AddressBook.dll
 D:\Works\AddressBook\AddressBook\obj\Debug\AddressBook.pdb
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\csc.exe
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\Microsoft.CodeAnalysis.dll
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\Microsoft.CSharp.Core.targets
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\Microsoft.VisualBasic.Core.targets
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\System.Collections.Immutable.dll
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\System.Reflection.Metadata.dll
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\vbc.exe
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\VBCSCompiler.exe
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\roslyn\VBCSCompiler.exe.config
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.ApplicationInsights.Extensions.Intercept_x86.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.ApplicationInsights.Extensions.Intercept_x64.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\AddressBook.dll.config
@@ -107,7 +95,6 @@ C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.Applicati
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.AspNet.Identity.Core.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.AspNet.Identity.Owin.dll
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.Diagnostics.Instrumentation.Extensions.Intercept.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.Owin.dll
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.Owin.Host.SystemWeb.dll
@@ -133,7 +120,6 @@ C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.Applicati
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.ApplicationInsights.Extensibility.DependencyCollector.xml
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.ApplicationInsights.Extensibility.Web.xml
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.ApplicationInsights.Web.TelemetryChannel.xml
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\System.Web.Helpers.xml
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\System.Web.Mvc.xml
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\System.Web.Optimization.xml
@@ -171,6 +157,4 @@ C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\Mvc.RazorTools.Font
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Resources.EmailTemplates.resources
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AddMessage.resources
 C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AppendMessageModel.resources
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.csprojResolveAssemblyReference.cache
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\myAES.dll
-C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\bin\myAES.pdb
+C:\Dropbox\Works\AddressBook_IDC\AddressBook\AddressBook\obj\Debug\AddressBook.Migrations.AddContactNotes.resources
