@@ -98,7 +98,7 @@ namespace AddressBook.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Email + model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -175,7 +175,7 @@ namespace AddressBook.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = model.Email, Email = model.Email, FirstName = "N.A.", LastName = "N.A." };
-                var result = await UserManager.CreateAsync(user, model.Email + model.Password);
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -244,7 +244,7 @@ namespace AddressBook.Controllers
 
                 await UserManager.UpdateAsync(user);
 
-                UserManager.SendEmailAsync(
+                await UserManager.SendEmailAsync(
                     user.Id,
                     "Reset Password",
                     string.Format(EmailTemplates.ResetPasswordTemplate, userViewModel.FirstName + " " + userViewModel.LastName, tempPwd, "<a href=\"" + callbackUrl + "\">link</a>"));
@@ -309,7 +309,7 @@ namespace AddressBook.Controllers
                 return View();
             }
 
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Email + model.Password);
+            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
                 user = db.Users.Find(user.Id);

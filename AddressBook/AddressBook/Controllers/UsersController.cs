@@ -10,6 +10,7 @@ using System.Web;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Security;
 using AddressBook.Resources;
+using Microsoft.AspNet.Identity;
 
 namespace AddressBook.Controllers
 {
@@ -88,7 +89,13 @@ namespace AddressBook.Controllers
                 var user = UserViewModel.ToDomainModel(userViewModel);
 
                 string randomPwd = Membership.GeneratePassword(8, 2);
-                var result = await UserManager.CreateAsync(user, user.Email + randomPwd);
+                for(int i = 0; i < 1000; i++)
+                {
+                    if ((await UserManager.PasswordValidator.ValidateAsync(randomPwd)) == IdentityResult.Success)
+                        break;
+                    randomPwd = Membership.GeneratePassword(8, 2);
+                }
+                var result = await UserManager.CreateAsync(user, randomPwd);
                 if (result.Succeeded)
                 {
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -99,9 +106,9 @@ namespace AddressBook.Controllers
 
                     await UserManager.AddToRoleAsync(user.Id, "User");
 
-                    UserManager.SendEmailAsync(user.Id,
+                    await UserManager.SendEmailAsync(user.Id,
                        "Account Confirmation",
-                       string.Format(EmailTemplates.AccountCreationTemplate, userViewModel.FirstName + " " + userViewModel.LastName, user.UserName, randomPwd, "<a href=\"" + callbackUrl + "\">link</a>"));                    
+                       string.Format(EmailTemplates.AccountCreationTemplate, userViewModel.FirstName + " " + userViewModel.LastName, user.UserName, randomPwd, "<a href=\"" + callbackUrl + "\">link</a>"));
 
                     return RedirectToAction("Index");
                 }
@@ -142,15 +149,34 @@ namespace AddressBook.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrator")]
-        public ActionResult Edit(UserViewModel userViewModel)
+        public async Task<ActionResult> Edit(UserViewModel userViewModel)
         {
             if (ModelState.IsValid)
             {
                 var originalUser = db.Users.Find(userViewModel.Id);
+
+                string oldUserName = originalUser.UserName;
+                if (oldUserName != userViewModel.Email)
+                    originalUser.EmailConfirmed = false;
+
                 UserViewModel.ToDomainModel(originalUser, userViewModel);
                 AddOrUpdateKeepExistingRoles(originalUser, userViewModel.Roles);
                 db.Entry(originalUser).State = EntityState.Modified;
                 db.SaveChanges();
+
+                if (oldUserName != userViewModel.Email)
+                {
+                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(userViewModel.Id);
+                    var callbackUrl = Url.Action(
+                       "ConfirmEmail", "Account",
+                       new { userId = userViewModel.Id, code = code },
+                       protocol: Request.Url.Scheme);
+
+                    await UserManager.SendEmailAsync(userViewModel.Id,
+                       "Email Confirmation",
+                       string.Format(EmailTemplates.ConfirmEmailTemplate, userViewModel.FirstName + " " + userViewModel.LastName, "<a href=\"" + callbackUrl + "\">link</a>"));
+                }
+
                 return RedirectToAction("Index");
             }
             return View(userViewModel);
@@ -188,7 +214,7 @@ namespace AddressBook.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(userViewModel.UserName);
+                var user = await UserManager.FindByNameAsync(userViewModel.Email);
                 if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -203,9 +229,9 @@ namespace AddressBook.Controllers
                 SHA256PasswordHasher pwdHasher = new SHA256PasswordHasher();
                 user.TempPassword = pwdHasher.HashPassword(tempPwd);
 
-                await UserManager.UpdateAsync(user);
+                IdentityResult result = await UserManager.UpdateAsync(user);
 
-                UserManager.SendEmailAsync(
+                await UserManager.SendEmailAsync(
                     user.Id,
                     "Reset Password By Admin",
                     string.Format(EmailTemplates.ResetPasswordTemplate, userViewModel.FirstName + " " + userViewModel.LastName, tempPwd, "<a href=\"" + callbackUrl + "\">link</a>"));
@@ -246,6 +272,7 @@ namespace AddressBook.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             User applicationUser = db.Users.Find(id);
+            db.Contacts.RemoveRange(applicationUser.Contacts);
             db.Users.Remove(applicationUser);
             db.SaveChanges();
 

@@ -143,6 +143,22 @@
     Address Book.
 &lt;/p&gt;</value>
   </data>
+  <data name="ConfirmEmailTemplate" xml:space="preserve">
+    <value>&lt;p&gt;
+    Dear {0},
+&lt;/p&gt;
+&lt;p&gt;
+    Please confirm your email by clicking the following link.
+&lt;/p&gt;
+&lt;p&gt;
+    {1}
+&lt;/p&gt;
+&lt;p&gt;
+    Yours sincerely,
+    &lt;br/&gt;
+    Address Book.
+&lt;/p&gt;</value>
+  </data>
   <data name="ResetPasswordTemplate" xml:space="preserve">
     <value>&lt;p&gt;
     Dear {0},

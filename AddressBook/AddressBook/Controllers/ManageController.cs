@@ -9,6 +9,7 @@ using Microsoft.Owin.Security;
 using AddressBook.Models;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using AddressBook.Resources;
 
 namespace AddressBook.Controllers
 {
@@ -40,9 +41,9 @@ namespace AddressBook.Controllers
                 }
                 return _signInManager;
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -227,6 +228,7 @@ namespace AddressBook.Controllers
 
         //
         // GET: /Manage/ChangePassword
+        [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
@@ -236,13 +238,14 @@ namespace AddressBook.Controllers
         // POST: /Manage/ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), User.Identity.Name + model.OldPassword, User.Identity.Name + model.NewPassword);
+            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
             {
                 var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -258,6 +261,7 @@ namespace AddressBook.Controllers
 
         //
         // GET: /Manage/SetPassword
+        [Authorize]
         public ActionResult SetPassword()
         {
             return View();
@@ -267,6 +271,7 @@ namespace AddressBook.Controllers
         // POST: /Manage/SetPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -290,6 +295,7 @@ namespace AddressBook.Controllers
 
         //
         // GET: /Manage/ChangeUserBasicInfo
+        [Authorize]
         public ActionResult ChangeUserBasicInfo()
         {
             User user = UserManager.FindById(User.Identity.GetUserId());
@@ -301,6 +307,7 @@ namespace AddressBook.Controllers
         // POST: /Manage/ChangeUserBasicInfo
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> ChangeUserBasicInfo([Bind(Include = "Email, FirstName, LastName")]UserBasicInfoViewModel model)
         {
             if (ModelState.IsValid)
@@ -311,8 +318,26 @@ namespace AddressBook.Controllers
                     if (user != null)
                     {
                         db.Entry(user).State = EntityState.Modified;
+
+                        string oldUserName = user.UserName;
+                        if (oldUserName != model.Email)
+                            user.EmailConfirmed = false;
+
                         UserBasicInfoViewModel.ToDomainModel(user, model);
                         db.SaveChanges();
+
+                        if (oldUserName != model.Email)
+                        {
+                            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                            var callbackUrl = Url.Action(
+                               "ConfirmEmail", "Account",
+                               new { userId = user.Id, code = code },
+                               protocol: Request.Url.Scheme);
+
+                            await UserManager.SendEmailAsync(user.Id,
+                               "Email Confirmation",
+                               string.Format(EmailTemplates.ConfirmEmailTemplate, model.FirstName + " " + model.LastName, "<a href=\"" + callbackUrl + "\">link</a>"));
+                        }
                     }
                 }
                 return RedirectToAction("Index");
@@ -377,7 +402,7 @@ namespace AddressBook.Controllers
             base.Dispose(disposing);
         }
 
-#region Helpers
+        #region Helpers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -428,6 +453,6 @@ namespace AddressBook.Controllers
             Error
         }
 
-#endregion
+        #endregion
     }
 }

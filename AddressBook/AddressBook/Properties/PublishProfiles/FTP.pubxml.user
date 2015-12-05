@@ -14,10 +14,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/01/2015 15:18:10</publishTime>
     </File>
     <File Include="bin/AddressBook.dll">
-      <publishTime>12/04/2015 11:24:52</publishTime>
+      <publishTime>12/04/2015 19:27:21</publishTime>
     </File>
     <File Include="bin/AddressBook.pdb">
-      <publishTime>12/04/2015 11:24:52</publishTime>
+      <publishTime>12/04/2015 19:27:21</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>12/01/2015 15:17:53</publishTime>
@@ -191,7 +191,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/02/2015 20:36:27</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>12/04/2015 10:46:51</publishTime>
+      <publishTime>12/04/2015 13:23:03</publishTime>
     </File>
     <File Include="favicon.ico">
       <publishTime>12/01/2015 15:17:45</publishTime>
@@ -245,7 +245,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/04/2015 09:38:20</publishTime>
     </File>
     <File Include="Scripts/ckeditor/config.js">
-      <publishTime>12/04/2015 09:38:20</publishTime>
+      <publishTime>12/04/2015 11:58:50</publishTime>
     </File>
     <File Include="Scripts/ckeditor/contents.css">
       <publishTime>12/04/2015 09:38:20</publishTime>
@@ -1256,7 +1256,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/01/2015 15:17:56</publishTime>
     </File>
     <File Include="Views/Account/Login.cshtml">
-      <publishTime>12/04/2015 00:57:19</publishTime>
+      <publishTime>12/04/2015 16:02:32</publishTime>
     </File>
     <File Include="Views/Account/Register.cshtml">
       <publishTime>12/01/2015 15:17:56</publishTime>
@@ -1277,16 +1277,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/01/2015 15:17:56</publishTime>
     </File>
     <File Include="Views/Contacts/Create.cshtml">
-      <publishTime>12/04/2015 00:27:49</publishTime>
+      <publishTime>12/04/2015 14:44:30</publishTime>
     </File>
     <File Include="Views/Contacts/Delete.cshtml">
-      <publishTime>12/04/2015 02:05:23</publishTime>
+      <publishTime>12/04/2015 14:55:44</publishTime>
     </File>
     <File Include="Views/Contacts/Details.cshtml">
-      <publishTime>12/04/2015 02:10:45</publishTime>
+      <publishTime>12/04/2015 14:55:00</publishTime>
     </File>
     <File Include="Views/Contacts/Edit.cshtml">
-      <publishTime>12/04/2015 10:02:02</publishTime>
+      <publishTime>12/04/2015 14:43:19</publishTime>
     </File>
     <File Include="Views/Contacts/Index.cshtml">
       <publishTime>12/04/2015 01:55:06</publishTime>
@@ -1346,28 +1346,28 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/01/2015 15:17:56</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>12/04/2015 10:44:55</publishTime>
+      <publishTime>12/04/2015 16:01:03</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
-      <publishTime>12/04/2015 00:23:16</publishTime>
+      <publishTime>12/04/2015 13:42:23</publishTime>
     </File>
     <File Include="Views/Users/Create.cshtml">
-      <publishTime>12/04/2015 00:36:49</publishTime>
+      <publishTime>12/04/2015 16:55:12</publishTime>
     </File>
     <File Include="Views/Users/Delete.cshtml">
-      <publishTime>12/04/2015 02:01:04</publishTime>
+      <publishTime>12/04/2015 16:55:02</publishTime>
     </File>
     <File Include="Views/Users/Details.cshtml">
-      <publishTime>12/04/2015 02:08:52</publishTime>
+      <publishTime>12/04/2015 16:54:51</publishTime>
     </File>
     <File Include="Views/Users/Edit.cshtml">
-      <publishTime>12/04/2015 00:02:20</publishTime>
+      <publishTime>12/04/2015 17:34:37</publishTime>
     </File>
     <File Include="Views/Users/Index.cshtml">
-      <publishTime>12/04/2015 01:56:12</publishTime>
+      <publishTime>12/04/2015 16:54:26</publishTime>
     </File>
     <File Include="Views/Users/ResetPassword.cshtml">
-      <publishTime>12/04/2015 11:19:47</publishTime>
+      <publishTime>12/04/2015 16:53:03</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>12/02/2015 20:48:38</publishTime>
@@ -1376,7 +1376,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/01/2015 15:17:45</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/04/2015 11:25:29</publishTime>
+      <publishTime>12/04/2015 19:27:30</publishTime>
     </File>
   </ItemGroup>
 </Project>

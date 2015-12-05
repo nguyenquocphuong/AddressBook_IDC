@@ -30,7 +30,7 @@ namespace AddressBook.Models
 
         public static void ToViewModel(User user, UserBasicInfoViewModel userBasicInfoViewModel)
         {
-            userBasicInfoViewModel.Email = user.Email;
+            userBasicInfoViewModel.Email = user.UserName;
             userBasicInfoViewModel.FirstName = AES.Decrypt(Convert.FromBase64String(user.FirstName));
             userBasicInfoViewModel.LastName = AES.Decrypt(Convert.FromBase64String(user.LastName));
         }
@@ -45,6 +45,7 @@ namespace AddressBook.Models
         public static void ToDomainModel(User user, UserBasicInfoViewModel userBasicInfoViewModel)
         {
             user.Email = userBasicInfoViewModel.Email;
+            user.UserName = userBasicInfoViewModel.Email;
             user.FirstName = Convert.ToBase64String(AES.Encrypt(userBasicInfoViewModel.FirstName));
             user.LastName = Convert.ToBase64String(AES.Encrypt(userBasicInfoViewModel.LastName));
         }
@@ -54,12 +55,6 @@ namespace AddressBook.Models
     {
         [Key]
         public string Id { get; set; }
-
-        [Required]
-        [Display(Name = "User Name")]
-        [DataType(DataType.EmailAddress)]
-        [EmailAddress]
-        public string UserName { get; set; }
 
         public virtual ICollection<AssignedRole> Roles { get; set; }
 
@@ -74,7 +69,6 @@ namespace AddressBook.Models
 
             UserBasicInfoViewModel.ToViewModel(user, userViewModel);
             userViewModel.Id = user.Id;
-            userViewModel.UserName = user.UserName;
 
             return userViewModel;
         }
@@ -101,7 +95,6 @@ namespace AddressBook.Models
             UserBasicInfoViewModel.ToDomainModel(user, userViewModel);
             if (!string.IsNullOrWhiteSpace(userViewModel.Id))
                 user.Id = userViewModel.Id;
-            user.UserName = userViewModel.UserName;
         }
     }
 

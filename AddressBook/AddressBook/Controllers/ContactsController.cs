@@ -42,6 +42,7 @@ namespace AddressBook.Controllers
                 return HttpNotFound();
             }
             contact.DecryptPII();
+            contact.Notes = HttpContext.Server.HtmlDecode(contact.Notes);
             return View(contact);
         }
 
@@ -59,7 +60,7 @@ namespace AddressBook.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "User")]
-        public ActionResult Create([Bind(Include = "FirstName,LastName,PhoneNumber,StreetName,City,Province,PostalCode,Country")] Contact contact)
+        public ActionResult Create(Contact contact)
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +73,7 @@ namespace AddressBook.Controllers
             }
 
             //ViewBag.UserId = new SelectList(db.Users, "Id", "Email", contact.UserId);
+            contact.Notes = HttpContext.Server.HtmlDecode(contact.Notes);
             return View(contact);
         }
 
@@ -128,6 +130,7 @@ namespace AddressBook.Controllers
                 return HttpNotFound();
             }
             contact.DecryptPII();
+            contact.Notes = HttpContext.Server.HtmlDecode(contact.Notes);
             return View(contact);
         }
 

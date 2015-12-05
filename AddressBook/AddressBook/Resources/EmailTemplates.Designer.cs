@@ -97,6 +97,28 @@ namespace AddressBook.Resources {
         ///    Dear {0},
         ///&lt;/p&gt;
         ///&lt;p&gt;
+        ///    Please confirm your email by clicking the following link.
+        ///&lt;/p&gt;
+        ///&lt;p&gt;
+        ///    {1}
+        ///&lt;/p&gt;
+        ///&lt;p&gt;
+        ///    Yours sincerely,
+        ///    &lt;br/&gt;
+        ///    Address Book.
+        ///&lt;/p&gt;.
+        /// </summary>
+        internal static string ConfirmEmailTemplate {
+            get {
+                return ResourceManager.GetString("ConfirmEmailTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;p&gt;
+        ///    Dear {0},
+        ///&lt;/p&gt;
+        ///&lt;p&gt;
         ///    Your temporary password is {1}
         ///&lt;/p&gt;
         ///&lt;p&gt;

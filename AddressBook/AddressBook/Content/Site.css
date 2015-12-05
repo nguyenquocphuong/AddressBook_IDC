@@ -23,13 +23,20 @@ textarea {
     max-width: 280px;
 }
 
-.fa-link-button-home {
+.fa-link-button-home > i {
+    padding-top: 5px;
     color: #555555;
 }
 
-.fa-link-button-home:hover 
+.fa-link-button-home > i:hover 
 {
     color: #ffffff ;
+}
+
+@media (max-width: 768px) {
+    .fa-link-button-home > i {
+    padding-left: 15px;
+}
 }
 
 .fa-link-button-default {
